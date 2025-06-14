@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-bg: #121212;
+            --secondary-bg: #1a1a1a;
+            --card-bg: #181818;
+            --card-hover-bg: #282828;
+            --text-color: #b3b3b3;
+            --text-white: #ffffff;
+            --spotify-green: #1ed760;
+            --button-bg: #000;
+            --button-hover-bg: #333;
+            --border-color: #282828;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            overflow: hidden; /* Hide main scrollbar */
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background-color: var(--button-bg); /* Darker sidebar background */
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto; /* Enable scrolling for sidebar if content overflows */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .sidebar::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera*/
+        }
+
+        .logo {
+            color: var(--text-white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 8px;
+            font-size: 2rem;
+            color: var(--spotify-green);
+        }
+
+        .main-nav ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .main-nav ul li {
+            margin-bottom: 10px;
+        }
+
+        .main-nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .main-nav ul li a i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .main-nav ul li a:hover {
+            color: var(--text-white);
+        }
+
+        .create-playlist, .find-podcasts {
+            background-color: var(--secondary-bg);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .create-playlist h4, .find-podcasts h4 {
+            color: var(--text-white);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .create-playlist p, .find-podcasts p {
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary {
+            background-color: var(--text-white);
+            color: var(--button-bg);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 500px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background-color: var(--button-bg);
+            color: var(--text-white);
+            border: 1px solid var(--text-color);
+            padding: 10px 18px;
+            border-radius: 500px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+
+        .sidebar-footer ul {
+            list-style: none;
+            margin-top: 30px; /* Adjust spacing */
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .sidebar-footer ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .sidebar-footer ul li a:hover {
+            color: var(--text-white);
+        }
+
+        .language-selector {
+            border: 1px solid var(--text-color);
+            color: var(--text-white);
+            padding: 8px 12px;
+            border-radius: 500px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+
+        .language-selector i {
+            margin-right: 8px;
+        }
+
+        .language-selector:hover {
+            border-color: var(--text-white);
+            background-color: var(--button-hover-bg);
+        }
+
+
+        /* Main Content Styling */
+        .main-content {
+            flex-grow: 1;
+            background-color: var(--primary-bg);
+            border-radius: 8px; /* Slight rounding for main content area */
+            margin: 8px; /* Spacing from edges of the window */
+            overflow-y: auto; /* Enable scrolling for main content */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .main-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera*/
+        }
+
+        .top-bar {
+            background-color: var(--secondary-bg);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-top-left-radius: 8px; /* Match main content border-radius */
+            border-top-right-radius: 8px;
+        }
+
+        .search-bar-header {
+            background-color: var(--text-white);
+            border-radius: 500px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            width: 300px; /* Adjust as needed */
+        }
+
+        .search-bar-header i {
+            color: var(--primary-bg);
+            margin-right: 10px;
+        }
+
+        .search-bar-header input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 0.9rem;
+            color: var(--primary-bg);
+            flex-grow: 1;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-right a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .header-right a:hover {
+            color: var(--text-white);
+        }
+
+        .header-right .separator {
+            color: var(--text-color);
+        }
+
+        .signup-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .signup-btn:hover {
+            color: var(--text-white);
+        }
+
+        .login-btn {
+            background-color: var(--text-white);
+            color: var(--button-bg);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 500px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+        }
+
+
+        /* Content Sections */
+        .content-section {
+            padding: 24px 32px;
+        }
+
+        .content-section h2 {
+            color: var(--text-white);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .show-all-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: color 0.2s ease-in-out;
+            visibility: hidden; /* Hidden by default */
+            opacity: 0; /* Hidden by default */
+            transform: translateX(10px); /* Small offset */
+            transition: visibility 0s, opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .content-section:hover .show-all-btn,
+        .content-section h2:hover .show-all-btn {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); /* Responsive grid */
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            background-color: var(--card-hover-bg);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 4px; /* Slightly rounded corners for images */
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        }
+
+        .artist-card img {
+            border-radius: 50%; /* Circular images for artists */
+        }
+
+        .card h3 {
+            color: var(--text-white);
+            font-size: 1rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%; /* Ensure ellipsis works */
+        }
+
+        .card p {
+            color: var(--text-color);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fab fa-spotify"></i> Spotify
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-search"></i> Search</a></li>
+                    <li><a href="#"><i class="fas fa-books"></i> Your Library</a></li>
+                </ul>
+            </nav>
+
+            <div class="create-playlist">
+                <h4>Create your first playlist</h4>
+                <p>It's easy, we'll help you</p>
+                <button class="btn-primary">Create playlist</button>
+            </div>
+
+            <div class="find-podcasts">
+                <h4>Let's find some podcasts to follow</h4>
+                <p>We'll keep you updated on new episodes</p>
+                <button class="btn-secondary">Browse podcasts</button>
+            </div>
+
+            <div class="sidebar-footer">
+                <ul>
+                    <li><a href="#">Legal</a></li>
+                    <li><a href="#">Safety & Privacy Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookies</a></li>
+                    <li><a href="#">About Ads</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i> English
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-bar-header">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="What do you want to play?">
+                </div>
+                <div class="header-right">
+                    <a href="#">Premium</a>
+                    <a href="#">Support</a>
+                    <a href="#">Download</a>
+                    <span class="separator">|</span>
+                    <a href="#"><i class="fas fa-download"></i> Install App</a>
+                    <a href="#" class="signup-btn">Sign up</a>
+                    <button class="login-btn">Log in</button>
+                </div>
+            </header>
+
+            <section class="content-section">
+                <h2>Trending songs <button class="show-all-btn">Show all</button></h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <img src="">
+                        <h3>Muttha Mazhai (Reprise)</h3>
+                        <p>A.R. Rahman, Chinmayi...</p>
+                    </div>
+                    <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Zamana Lage (From "Metro...")</h3>
+                        <p>Pritam, Arijit Singh...</p>
+                    </div>
+                     <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Shaky</h3>
+                        <p>Sanju Rathod, D-SPARK...</p>
+                    </div>
+                    <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Minnalvala</h3>
+                        <p>Jakes Bejoy, Sid Sriram...</p>
+                    </div>
+                    <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Raat Ke Shikari</h3>
+                        <p>Masoom Sharma</p>
+                    </div>
+                    <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Galiyon Ke Ghalib</h3>
+                        <p>Badshah, HinaN</p>
+                    </div>
+                    </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Popular artists <button class="show-all-btn">Show all</button></h2>
+                <div class="card-grid artist-grid">
+                    <div class="card artist-card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Artist Photo">
+                        <h3>Sachin-Jigar</h3>
+                        <p>Artist</p>
+                    </div>
+                    <div class="card artist-card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Artist Photo">
+                        <h3>Vishal-Shekhar</h3>
+                        <p>Artist</p>
+                    </div>
+                    <div class="card artist-card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Artist Photo">
+                        <h3>Atif Aslam</h3>
+                        <p>Artist</p>
+                    </div>
+                    <div class="card artist-card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Artist Photo">
+                        <h3>Anirudh Ravichander</h3>
+                        <p>Artist</p>
+                    </div>
+                    <div class="card artist-card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Artist Photo">
+                        <h3>Udit Narayan</h3>
+                        <p>Artist</p>
+                    </div>
+                    <div class="card artist-card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Artist Photo">
+                        <h3>Yo Yo Honey Singh</h3>
+                        <p>Artist</p>
+                    </div>
+                    </div>
+            </section>
+
+             <section class="content-section">
+                <h2>Popular albums and singles <button class="show-all-btn">Show all</button></h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Album Title 1</h3>
+                        <p>Artist Name</p>
+                    </div>
+                    <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Album Title 2</h3>
+                        <p>Artist Name</p>
+                    </div>
+                     <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Album Title 3</h3>
+                        <p>Artist Name</p>
+                    </div>
+                     <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Album Title 4</h3>
+                        <p>Artist Name</p>
+                    </div>
+                     <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Album Title 5</h3>
+                        <p>Artist Name</p>
+                    </div>
+                     <div class="card">
+                        <img src="C:\Users\bhava\Downloads\play1.jpeg" alt="Album Art">
+                        <h3>Album Title 6</h3>
+                        <p>Artist Name</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Basic JavaScript for demonstration.
+        // In a real Spotify application, this would handle dynamic content loading,
+        // music playback, search functionality, routing, etc.
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Spotify Clone Loaded!");
+
+            // Example: A simple hover effect for "Show all" buttons
+            const contentSections = document.querySelectorAll('.content-section');
+
+            contentSections.forEach(section => {
+                const showAllBtn = section.querySelector('.show-all-btn');
+                if (showAllBtn) {
+                    section.addEventListener('mouseenter', () => {
+                        showAllBtn.style.visibility = 'visible';
+                        showAllBtn.style.opacity = '1';
+                        showAllBtn.style.transform = 'translateX(0)';
+                    });
+
+                    section.addEventListener('mouseleave', () => {
+                        showAllBtn.style.visibility = 'hidden';
+                        showAllBtn.style.opacity = '0';
+                        showAllBtn.style.transform = 'translateX(10px)';
+                    });
+                }
+            });
+
+            // You would typically fetch data here from an API (e.g., Spotify API)
+            // fetch('https://api.spotify.com/v1/browse/new-releases', {
+            //     headers: {
+            //         'Authorization': 'Bearer YOUR_SPOTIFY_ACCESS_TOKEN'
+            //     }
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     // Render songs/albums dynamically
+            //     console.log(data);
+            // })
+            // .catch(error => console.error('Error fetching data:', error));
+        });
+    </script>
+</body>
+</html>
