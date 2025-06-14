@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Portfolio</title>
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1d1f20, #33353a);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: fixed;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 50px;
+      z-index: 1000;
+    }
+
+    header .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00bcd4;
+    }
+
+    header nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    header nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    header nav ul li a:hover {
+      color: #00bcd4;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: url('https://source.unsplash.com/random/1920x1080') center/cover no-repeat;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+
+    .hero a {
+      text-decoration: none;
+      padding: 10px 20px;
+      background: #00bcd4;
+      color: white;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      transition: background 0.3s;
+    }
+
+    .hero a:hover {
+      background: #0097a7;
+    }
+
+    /* Sections */
+    section {
+      padding: 100px 50px;
+      text-align: center;
+    }
+
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #00bcd4;
+    }
+
+    section p {
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    /* Education Section */
+    .education-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .education-item {
+      background: #444;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      text-align: left;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .education-item h3 {
+      font-size: 1.5rem;
+      color: #ddd;
+      margin-bottom: 10px;
+    }
+
+    .education-item p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    /* Skills Section */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: #444;
+      padding: 20px;
+      border-radius: 10px;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .skill-card img {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+
+    .skill-card h3 {
+      font-size: 1.2rem;
+      color: #ddd;
+    }
+
+    /* Projects Section */
+    .projects {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .project-card {
+      background: #444;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .project-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .project-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .project-card p {
+      font-size: 1rem;
+      color: #ddd;
+    }
+
+    .project-card a {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #00bcd4;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #222;
+      color: #bbb;
+      margin-top: 50px;
+    }
+
+    footer a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">MyPortfolio</div>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Welcome to My Portfolio</h1>
+    <p>Crafting beautiful experiences for the web</p>
+    <a href="#about">Know More About Me</a>
+  </div>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      I’m Durga, a passionate web developer with experience in building engaging and
+      responsive websites. I specialize in frontend development and love creating unique user
+      experiences.
+    </p>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <div class="education-list">
+      <div class="education-item">
+        <h3>Bachelor of Technology in Computer Science</h3>
+        <p>XYZ University, 2021 - 2025</p>
+        <p>GPA: 3.8/4.0</p>
+      </div>
+      <div class="education-item">
+        <h3>Higher Secondary Education</h3>
+        <p>ABC School, 2019 - 2021</p>
+        <p>Percentage: 90%</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>My Skills</h2>
+    <div class="skills">
+      <div class="skill-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/732/732212.png" alt="HTML">
+        <h3>HTML</h3>
+      </div>
+      <div class="skill-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/732/732190.png" alt="CSS">
+        <h3>CSS</h3>
+      </div>
+      <div class="skill-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" alt="JavaScript">
+        <h3>JavaScript</h3>
+      </div>
+      <div class="skill-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/1126/1126012.png" alt="React">
+        <h3>React</h3>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>My Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <img src="C:\Users\bhava\Downloads\ai.jpeg" alt="Project 1">
+        <h3>Project 1</h3>
+        <p>An innovative project that solves real-world problems.</p>
+        <a href="#">View Project</a>
+      </div>
+      <div class="project-card">
+        <img src="C:\Users\bhava\Downloads\sa.jpeg" alt="Project 2">
+        <h3>Project 2</h3>
+        <p>A creative solution built with the latest technologies.</p>
+        <a href="#">View Project</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Durga. Designed with passion. <a href="#contact">Contact Me: 9998887766</a></p>
+  </footer>
+</body>
+</html>
